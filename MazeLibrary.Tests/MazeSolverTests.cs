@@ -6,9 +6,9 @@ namespace MazeLibrary.Tests
     [TestFixture]
     public class MazeSolverTests
     {
-        private readonly int[] startXs = { 1, 1, 1, 1, 0, 0 };
+        private readonly int[] startXs = { 1, 1, 1, 10, 0 };
 
-        private readonly int[] startYs = { 0, 0, 0, 0, 4, 1 };
+        private readonly int[] startYs = { 0, 0, 0, 11, 9 };
 
         private readonly int[][,] sourceData = new int[][,]
         {
@@ -40,13 +40,13 @@ namespace MazeLibrary.Tests
             {
                 { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {  0,  0, -1,  0,  0,  0,  0,  0, -1,  0,  0, -1 },
-                { -1,  0, -1,  0, -1, -1,  0,  0, -1, -1,  0, -1 },
+                { -1,  0, -1,  0, -1, -1, -1,  0, -1, -1,  0, -1 },
                 { -1,  0, -1,  0,  0, -1,  0,  0,  0,  0,  0, -1 },
                 { -1,  0, -1, -1,  0, -1, -1, -1, -1, -1, -1, -1 },
                 { -1,  0, -1,  0,  0, -1,  0, -1,  0,  0,  0, -1 },
                 { -1,  0, -1,  0, -1, -1,  0,  0,  0, -1,  0, -1 },
                 { -1,  0, -1,  0,  0,  0,  0, -1, -1, -1,  0, -1 },
-                { -1,  0, -1,  0, -1,  0,  0, -1,  0, -1,  0, -1 },
+                { -1,  0, -1,  0, -1, -1,  0, -1,  0, -1,  0, -1 },
                 { -1,  0, -1, -1, -1, -1,  0, -1,  0, -1,  0, -1 },
                 { -1,  0,  0,  0,  0,  0,  0, -1,  0,  0,  0,  0 },
                 { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
@@ -98,13 +98,13 @@ namespace MazeLibrary.Tests
             {
                 { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
                 {  1,  2, -1,  0,  0,  0,  0,  0, -1,  0,  0, -1 },
-                { -1,  3, -1,  0, -1, -1,  0,  0, -1, -1,  0, -1 },
+                { -1,  3, -1,  0, -1, -1, -1,  0, -1, -1,  0, -1 },
                 { -1,  4, -1,  0,  0, -1,  0,  0,  0,  0,  0, -1 },
                 { -1,  5, -1, -1,  0, -1, -1, -1, -1, -1, -1, -1 },
                 { -1,  6, -1,  0,  0, -1,  0, -1, 23, 24, 25, -1 },
                 { -1,  7, -1,  0, -1, -1, 20, 21, 22, -1, 26, -1 },
                 { -1,  8, -1,  0,  0,  0, 19, -1, -1, -1, 27, -1 },
-                { -1,  9, -1,  0, -1,  0, 18, -1,  0, -1, 28, -1 },
+                { -1,  9, -1,  0, -1, -1, 18, -1,  0, -1, 28, -1 },
                 { -1, 10, -1, -1, -1, -1, 17, -1,  0, -1, 29, -1 },
                 { -1, 11, 12, 13, 14, 15, 16, -1,  0,  0, 30, 31 },
                 { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
@@ -128,26 +128,24 @@ namespace MazeLibrary.Tests
 
         [Test]
         public void MazeSolverConstructor_WithNull_ThrowsArgumentNullException()
-            => Assert.Throws<ArgumentNullException>(() => new MazeSolver(null, 1, 2));
+            => Assert.Throws<ArgumentNullException>(() => Maze.PassMaze(null, 1, 1));
 
         [Test]
         public void MazeSolverConstructor_WithInvalidStartIndexX_ThrowsArgumentException()
-            => Assert.Throws<ArgumentException>(() => new MazeSolver(sourceData[1], -12, 2));
+            => Assert.Throws<ArgumentException>(() => Maze.PassMaze(sourceData[1], -12, 2));
 
         [Test]
         public void MazeSolverConstructor_WithInvalidStartIndexY_ThrowsArgumentException()
-            => Assert.Throws<ArgumentException>(() => new MazeSolver(sourceData[1], 0, -2));
+            => Assert.Throws<ArgumentException>(() => Maze.PassMaze(sourceData[1], 0, -2));
 
         [Test]
         public void PassMaze_SuccessfulTests()
         {
             for (int i = 0; i < sourceData.Length; i++)
             {
-                var solver = new MazeSolver(sourceData[i], startXs[i], startYs[i]);
+                Maze.PassMaze(sourceData[i], startXs[i], startYs[i]);
 
-                solver.PassMaze();
-
-                if (!MatrixAreEquals(solver.MazeWithPass(), result[i]))
+                if (!MatrixAreEquals(sourceData[i], result[i]))
                 {
                     Assert.Fail();
                 }

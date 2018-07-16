@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MazeLibrary
 {
@@ -7,6 +6,7 @@ namespace MazeLibrary
     {
         public T Point { get; private set; }
         public List<Node<T>> Leafs { get; set; }
+        public Node<T> Root { get; set; }
 
         public Node(T point)
         {
