@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+
 namespace MazeLibrary
 {
     public static class Maze
     {
+        #region Private fields
         private static readonly int _space = 0;
         private static readonly int _wall = -1;
         private static readonly int _visited = -2;
         private static (int X, int Y) _start;
         private static int _n, _m;
+        #endregion
 
         #region Public API
         public static  int PassMaze(int[,] array, int x, int y)
@@ -106,6 +109,7 @@ namespace MazeLibrary
 
         private static bool MoveNext(int[,] maze, Node<(int X, int Y)> node)
         {
+            bool result = false;
             int x = node.Point.X, 
                 y = node.Point.Y;
             int parentX = node.Root != null ? node.Root.Point.X : -1,
@@ -128,6 +132,7 @@ namespace MazeLibrary
                 if (IsBlock(maze, node))
                 {
                     maze[x, y] = _wall;
+
                     return ComeBack(maze, node);
                 }
 
@@ -143,13 +148,14 @@ namespace MazeLibrary
             {
                 maze[x, y] = _visited;
             }
-            TryMove(maze, x - 1, y, up, node);
-            TryMove(maze, x + 1, y, down, node);
 
-            TryMove(maze, x, y + 1, right, node);
-            TryMove(maze, x, y - 1, left, node);
+            result = TryMove(maze, x - 1, y, up, node) ? true: result;
+            result = TryMove(maze, x + 1, y, down, node) ? true : result;
 
-            return true;
+            result = TryMove(maze, x, y + 1, right, node) ? true : result;
+            result = TryMove(maze, x, y - 1, left, node) ? true : result;
+
+            return result;
         }
 
         private static bool ComeBack(int[,] maze, Node<(int X, int Y)> node)
@@ -194,15 +200,16 @@ namespace MazeLibrary
             return walls == 3;
         }
 
-        private static void TryMove(int[,] maze, int x, int y, bool flag, Node<(int X, int Y)> node)
+        private static bool TryMove(int[,] maze, int x, int y, bool flag, Node<(int X, int Y)> node)
         {
             if (flag)
             {
                 var leaf = new Node<(int X, int Y)>((x, y));
                 leaf.Root = node;
                 node.Add(leaf);
-                MoveNext(maze, leaf);
+                return MoveNext(maze, leaf);
             }
+            return false;
         }
 
         private static void IncValue(bool value, ref int directions)

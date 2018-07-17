@@ -10,6 +10,25 @@ namespace MazeLibrary.Tests
 
         private readonly int[] startYs = { 0, 0, 0, 11, 9 };
 
+        private readonly int[][,] withoutExit = new int[][,]
+        {
+            new int[,]
+            {
+                { -1, -1, -1 },
+                { -1,  0,  -1 },
+                { -1,  -1, -1 },
+            },
+            new int[,]
+            {
+                { -1, -1, -1, -1, -1, -1 },
+                { -1,  0,  0, -1,  0, -1 },
+                { -1,  0, -1, -1,  0, -1 },
+                { -1,  0, -1, -1,  0,  0 },
+                { -1,  0,  0,  0, -1, -1 },
+                { -1, -1, -1, -1, -1, -1 }
+            },
+        };
+        
         private readonly int[][,] sourceData = new int[][,]
         {
             new int[,]
@@ -127,15 +146,27 @@ namespace MazeLibrary.Tests
         };
 
         [Test]
-        public void MazeSolverConstructor_WithNull_ThrowsArgumentNullException()
+        public void PassMaze_WithNull_ThrowsArgumentNullException()
             => Assert.Throws<ArgumentNullException>(() => Maze.PassMaze(null, 1, 1));
 
         [Test]
-        public void MazeSolverConstructor_WithInvalidStartIndexX_ThrowsArgumentException()
+        public void PassMaze_WithInvalidStartIndexX_ThrowsArgumentException()
             => Assert.Throws<ArgumentException>(() => Maze.PassMaze(sourceData[1], -12, 2));
 
         [Test]
-        public void MazeSolverConstructor_WithInvalidStartIndexY_ThrowsArgumentException()
+        public void PassMaze_WithoutEntry_CorrectResult()
+        {
+            int expected = -1;
+            for (int i = 0; i < withoutExit.Length; i++)
+            {
+                int actual = Maze.PassMaze(withoutExit[i], 1, 1);
+
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
+        [Test]
+        public void PassMazee_WithInvalidStartIndexY_ThrowsArgumentException()
             => Assert.Throws<ArgumentException>(() => Maze.PassMaze(sourceData[1], 0, -2));
 
         [Test]

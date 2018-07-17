@@ -47,7 +47,6 @@
     <Compile Include="ArrayExtension.cs" />
     <Compile Include="Maze.cs" />
     <Compile Include="Node.cs" />
-    <Compile Include="MazeSolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
